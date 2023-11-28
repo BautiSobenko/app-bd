@@ -19,8 +19,8 @@ dotenv.config();
 
   await client.connect();
 
-  const res = await client.query('SELECT $1::text as connected', ['Connection to postgres successful!']);
-  console.log(res.rows[0].connected);
+  const res = await client.query('select * from empleado');
+  console.log(res.rows);
 
   await client.end();
 })();
