@@ -22,10 +22,10 @@ class Empleado{
     async conectarBD(){
         try{
             await client.connect();
-            console.log('se conecto a la bd')
+            console.log('Conectado con exito a la base de datos')
         }
         catch(e){
-            console.log('no se pudo conectar')
+            console.log('Error en la conexion a la base de datos')
         }
     }
 
@@ -58,7 +58,7 @@ class Empleado{
 
     }
 
-    modificarEmpleado(Empleado , atributo){
+    async modificarEmpleado( empleado , atributo){
         const query = `
         UPDATE INTO empleado (nro_identificación, nombre, tipo_doc, nro_doc, fecha_nacimiento, domicilio, categoría, password, huella_dactilar)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -84,7 +84,7 @@ class Empleado{
         }
     }
 
-    mostrarEmpleados(){
+    async mostrarEmpleados(){
         const query = `
         SELECT * FROM empleado "
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -98,6 +98,35 @@ class Empleado{
             console.log('no se pudieron mostrar los empleados')
         }
     }
+
+    async leerEmpleados() {
+        try {
+          const query = 'SELECT * FROM empleado;';
+          const result = await pool.query(query);
+          return result.rows;
+        } catch (error) {
+          console.error('Error al leer los empleados:', error.message);
+          throw error;
+        }
+      };
+      
+      async eliminarEmpleado(nro_identificación) {
+        try {
+          const query = `
+            DELETE FROM empleado
+            WHERE nro_identificación = $1
+            RETURNING *;
+          `;
+      
+          const values = [nro_identificación];
+      
+          const result = await pool.query(query, values);
+          return result.rows[0];
+        } catch (error) {
+          console.error('Error al eliminar el empleado:', error.message);
+          throw error;
+        }
+      };
     
 }
 

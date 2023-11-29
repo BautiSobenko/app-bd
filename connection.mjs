@@ -45,12 +45,32 @@ dotenv.config();
 
     eliminarEmpleado(2);
 
-    // SITUACION DE ROLLBACK
 
-    //! HACER SALTAR EL TRIGGER
+    const nuevoEmpleado = {
+        nombre: 'John Doe',
+        tipo_doc: 'dni',
+        nro_doc: '12345678',
+        fecha_nacimiento: '2000-01-01',
+        domicilio: 'Calle Principal 123',
+        categoría: 'no_profesional',
+        password: 'contraseña123',
+        huella_dactilar: '111100011111010101011001',
+    };
 
-    //! SIMULAR ROLLBACK
+    const empleadoCreado = await crearEmpleado(nuevoEmpleado);
+    console.log('Empleado creado:', empleadoCreado);
 
+    // Actualizar el nombre de un empleado
+    const empleadoActualizado = await actualizarEmpleado(123, 'John Smith');
+    console.log('Empleado actualizado:', empleadoActualizado);
+
+    // Leer todos los empleados
+    const empleados = await leerEmpleados();
+    console.log('Lista de empleados:', empleados);
+
+    // Eliminar un empleado
+    const empleadoEliminado = await eliminarEmpleado(123);
+    console.log('Empleado eliminado:', empleadoEliminado);
 
     client.query("COMMIT");
 
@@ -61,6 +81,5 @@ dotenv.config();
   } finally {
     await client.end();
   }
-}
-)();
-
+}) ();
+  
