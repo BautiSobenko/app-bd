@@ -23,6 +23,7 @@ let calles = ['Avenida de Mayo', 'Corrientes', '9 de Julio', 'Florida', 'Sarmien
   'Avellaneda', 'San José', 'Pellegrini', 'Diagonal Norte', 'Suipacha', 'Monserrat', 'Av. Presidente Roque Sáenz Peña', 'Esmeralda', 'San Juan',
    'Avenida Alvear', 'Avenida Libertador', 'Córdoba', 'Carlos Pellegrini', 'Avenida Rivadavia', 'Santa Rosa', 'Güemes', 'Avenida Paseo Colón',
     'Sáenz', 'Tacuarí', 'San Luis', 'Parque Lezama', 'Balcarce', 'Piedras', 'Santiago del Estero', 'Avenida Scalabrini Ortiz', 'Medrano'];
+
 // Genera 500 tuplas
 for (let i = 1; i <= 500; i++) {
     nombre = faker.helpers.arrayElement(nombres) + ' ' + faker.helpers.arrayElement(apellidos);

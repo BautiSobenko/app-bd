@@ -26,20 +26,23 @@ const crearEmpleado = async (empleado) => {
   }
 };
 
-//! Ver que atributos se podrian actualizar
-const actualizarEmpleado = async (nro_identificación, nuevoNombre) => {
+const actualizarEmpleado = async (nro_identificacion, modificables) => {
   try {
-    const query = `
-      UPDATE empleado
-      SET nombre = $1
-      WHERE nro_identificación = $2
-      RETURNING *;
-    `;
+  
+    let query = "UPDATE empleado";
 
-    const values = [nuevoNombre, nro_identificación];
+    const claves = Object.keys(modificables);
+    claves.forEach( key => {
+        if (key) query.concat(`SET ${key} = ${modificables[key]}`);
+    })
+
+    query.concat("WHERE nro_identificacion = $1 RETURNING *;");
+
+    const values = [nro_identificacion];
 
     const result = await pool.query(query, values);
     return result.rows[0];
+
   } catch (error) {
     console.error('Error al actualizar el empleado:', error.message);
     throw error;
@@ -112,7 +115,5 @@ const main = async () => {
     } finally {
         await pool.end();
  }
-};
-
-// Ejecutar la aplicación
+}; 
 main();
