@@ -1,44 +1,80 @@
+import pgClient from 'pg';
+import dotenv from 'dotenv';
 import { Empleado } from './crudEmpleados.mjs';
 
+const {Client} = pgClient;
+dotenv.config();
+
 (async () => {
-  
-  const empleado = new Empleado();
+
+  const client = new Client({
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    database: process.env.PG_DATABASE,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
   try {
 
-    await empleado.conectarBD();
+    await client.connect();
 
-    const nuevoEmpleado = {
-        nombre: 'John Quilis',
-        tipo_doc: 'dni',
-        nro_doc: '15453135',
-        fecha_nacimiento: '2000-01-01',
-        domicilio: 'Calle Principal 123',
-        categoria: 'noProfesional',
-        password: 'contraseña123',
-        huella_dactilar: '11110001111101010111011010111101110011',
-    };
+    let result;
 
-    //const empleadoCreado = await empleado.agregarEmpleado(nuevoEmpleado);
-    //console.log('Empleado creado:', empleadoCreado);
+    result = await client.query("SELECT * FROM obtener_no_profesionales_autorizados();");
+    console.log("EMPLEADOS AUTORIZADOS: \n", result.rows);
+
+    // result = await client.query("SELECT * FROM obtener_empleados_con_intentos_fallidos();");
+    // console.log("EMPLEADOS AUTORIZADOS: \n", result.rows);
+
+    // result = await client.query("SELECT * FROM vista_sin_ingreso_exitoso_posterior;");
+    // console.log("EMPLEADOS AUTORIZADOS: \n", result.rows);
+
+    client.end();
+
+    queryEmpleado(1);
+    queryEmpleado(2);
+
     
-    //const empleadoEliminado = await empleado.eliminarEmpleado(513);
-    //console.log('Empleado eliminado:', empleadoEliminado);
-
-    const modificables = {
-      nombre: null,
-      domicilio: null,
-      password: null,
-    }
-
-    //const empleadoModificado = await empleado.actualizarEmpleado(500, modificables);
-    //console.log('Empleado modificado:', empleadoModificado);
 
   } catch (error) {
     console.error('Error en la aplicación:', error.message);
-
-  } finally {
-    await empleado.cerrarConexion();
   }
+
 }) ();
   
+const queryEmpleado = async (id) => {
+
+  console.log("COMIENZA LA TRANSACCION CON ID: ",id);
+
+  const empleado = new Empleado();
+
+      try {
+
+        empleado.conectarBD();
+
+        empleado.client.query("START TRANSACTION ISOLATION LEVEL SERIALIZABLE");
+
+        const modificables = {
+          nombre: null,
+          domicilio: "Jujuy 0000",
+          password: null,
+        }
+      
+        let result = await empleado.actualizarEmpleado(182, modificables);
+        console.log(id, " EMPLEADO MODIFICADO: ", result.rows[0]);
+
+        empleado.client.query("COMMIT");
+        console.log("TERMINA TRANSACCION CON ID: ", id);
+
+      } catch (error) {
+          empleado.client.query("ROLLBACK");
+          console.log("ROLLBACK DE TRANSACCION CON ID: ", id);
+      } 
+        
+
+
+}

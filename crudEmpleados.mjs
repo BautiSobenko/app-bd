@@ -72,8 +72,7 @@ class Empleado{
               query += ` ${key} = '${modificables[key]}'`;
             }
         })
-
-        
+   
         query += "WHERE nro_identificacion = $1 RETURNING *;";
         
         console.log(query);
@@ -84,7 +83,7 @@ class Empleado{
         return result.rows[0];
     
       } catch (error) {
-        console.error('Error al actualizar el empleado:', error.message);
+        console.log('Error al actualizar el empleado:', error.message);
         throw error;
       }
     };
