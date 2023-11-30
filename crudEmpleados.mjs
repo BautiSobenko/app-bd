@@ -93,6 +93,8 @@ class Empleado{
         const query = `
         SELECT * FROM empleado "
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        ORDER BY nro_identificacion DESC
+        LIMIT 4
         RETURNING *;
         `;
 
