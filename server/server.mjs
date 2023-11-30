@@ -1,5 +1,5 @@
 import express, { json } from 'express';
-import { Empleado } from "./crudEmpleados.mjs";
+import { Empleado } from "../crudEmpleados.mjs";
 
 const app = express();
 const puerto = 3000;
