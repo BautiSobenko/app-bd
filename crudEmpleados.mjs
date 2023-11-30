@@ -91,31 +91,20 @@ class Empleado{
 
     async mostrarEmpleados(){
         const query = `
-        SELECT * FROM empleado "
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        SELECT * 
+        FROM empleado
         ORDER BY nro_identificacion DESC
-        LIMIT 4
-        RETURNING *;
+        LIMIT 10;
         `;
 
         try{
-            return (await client.query(query, values)).rows;
+            return (await this.client.query(query)).rows;
         }
         catch(error){
-            console.log('no se pudieron mostrar los empleados')
+          console.log(error)
+          console.log('No se pudieron mostrar los empleados')
         }
     }
-
-    async leerEmpleados() {
-        try {
-          const query = 'SELECT * FROM empleado;';
-          const result = await client.query(query);
-          return result.rows;
-        } catch (error) {
-          console.error('Error al leer los empleados:', error.message);
-          throw error;
-        }
-      };
       
       async eliminarEmpleado(nro_identificacion) {
         try {
