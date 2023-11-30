@@ -2,7 +2,7 @@ import { createWriteStream } from 'fs';
 import { fakerDE as faker } from '@faker-js/faker';
 
 // Abre un archivo para escribir el script SQL
-const file = createWriteStream('datosAccesos.sql');
+const file = createWriteStream('datosAccesos2.sql');
 
 //id_nivel tiene que ser el nivel del area y si el usuario de nro_id debe poder acceder
 
@@ -14,7 +14,7 @@ let hrs,mins,area,nivel;
 let autorizacion;
 let idEmpleado;
 
-for (let i = 1; i <= 2000; i++) {
+for (let i = 1; i <= 50; i++) {
     area=0;
     idEmpleado=0;
     hrs = Math.round(Math.random()*23);
@@ -76,7 +76,7 @@ for (let i = 1; i <= 2000; i++) {
     );
 
     // Agrega coma al final de cada tupla, excepto la última
-    if (i < 2000) {
+    if (i < 50) {
         file.write(",\n");
     } else {
         file.write(";\n");
