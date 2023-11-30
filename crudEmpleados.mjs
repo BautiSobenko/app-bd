@@ -73,7 +73,7 @@ class Empleado{
             }
         })
    
-        query += "WHERE nro_identificacion = $1 RETURNING *;";
+        query += 'WHERE nro_identificacion = $1 RETURNING *;';
         
         console.log(query);
 

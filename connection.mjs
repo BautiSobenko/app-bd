@@ -56,21 +56,22 @@ const queryEmpleado = async (id) => {
 
         empleado.conectarBD();
 
-        empleado.client.query("START TRANSACTION ISOLATION LEVEL SERIALIZABLE");
+        empleado.client.query("START TRANSACTION ISOLATION LEVEL serializable;");
 
         const modificables = {
           nombre: null,
-          domicilio: "Jujuy 0000",
+          domicilio: "Jujuy 1400",
           password: null,
         }
       
         let result = await empleado.actualizarEmpleado(182, modificables);
-        console.log(id, " EMPLEADO MODIFICADO: ", result.rows[0]);
+        //console.log(id, " EMPLEADO MODIFICADO: ", result.rows[0]);
 
-        empleado.client.query("COMMIT");
+        empleado.client.query("COMMIT;");
         console.log("TERMINA TRANSACCION CON ID: ", id);
 
       } catch (error) {
+          console.log(error.message);
           empleado.client.query("ROLLBACK");
           console.log("ROLLBACK DE TRANSACCION CON ID: ", id);
       } 
