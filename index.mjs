@@ -1,12 +1,8 @@
-import { Empleado } from "./crudEmpleados.mjs";
-
 const cargarTabla = async () => {
+    
     let cuerpoTabla = document.getElementById('cuerpo'); 
 
 
-    // let empleado = new Empleado()
-
-    // await empleado.conectarBD();
 
     const empleados = [{
         nombre: 'John Quilis',
@@ -25,7 +21,7 @@ const cargarTabla = async () => {
     //const empleadoEliminado = await empleado.eliminarEmpleado(513);
     //console.log('Empleado eliminado:', empleadoEliminado);
 
-    // let empleados = empleado.mostrarEmpleados()
+    
     let tableContent = '';
 
 
@@ -44,5 +40,20 @@ const cargarTabla = async () => {
 
     cuerpoTabla.innerHTML = tableContent;
 };
+
+const mostrarEmpleados() {
+
+    let url = "http://localhost:5050/";
+
+    let options = {
+        method: "GET",
+        headers: {
+            accept: "application/json"
+        }
+    }
+
+    try
+
+}
 
 cargarTabla()
