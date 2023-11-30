@@ -7,7 +7,7 @@ const file = createWriteStream('datosAccesos.sql');
 //id_nivel tiene que ser el nivel del area y si el usuario de nro_id debe poder acceder
 
 // Escribe la parte inicial del script SQL
-file.write("insert into acceso (id_acceso, accion, fecha, hora, nro_identificacion, id_nivel, autorizacion, id_area) values\n");
+file.write("insert into acceso (accion, fecha, hora, nro_identificacion, id_nivel, autorizacion, id_area) values\n");
 
 let accion = ['Acceso','Egreso'];
 let hrs,mins,area,nivel;
@@ -65,8 +65,8 @@ for (let i = 1; i <= 2000; i++) {
     }
 
     file.write(
-        `(${i}, ` +
-        `'${faker.helpers.arrayElement(accion)}', ` +
+       // `(${i}, ` +
+        `('${faker.helpers.arrayElement(accion)}', ` +
         `'${faker.date.between({from:'2012-01-01T00:00:00.000Z', to: '2023-01-01T00:00:00.000Z'}).toISOString().split('T')[0]}', ` + 
         `'${hrs+':'+mins}', ` +
         `'${idEmpleado}', ` +

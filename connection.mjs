@@ -18,42 +18,10 @@ dotenv.config();
   });
 
   try {
-
+    
     await client.connect();
-
-    client.query("BEGIN");
-
-    let result = await client.query("CALL obtener_empleados_autorizados()");
-    console.log("EMPLEADOS AUTORIZADOS: " + result.rows);
-
-    result = await client.query("CALL obtener_empleados_con_intentos_fallidos()");
-    console.log("EMPLEADOS CON INTENTOS FALLIDOS: " + result.rows);
-
-    const query = 'SELECT * FROM vista_intentos_fallidos;';
-    result = await pool.query(query);
-
-    // SITUACION DE COMMIT
-
-    const modificables = {
-      nombre: null,
-      domicilio: "Lamadrid 2271",
-      categoria: null,
-      password: null,
-    }
-
-    actualizarEmpleado(182, modificables);
-
-    eliminarEmpleado(2);
-
-    // SITUACION DE ROLLBACK
-
-    //! HACER SALTAR EL TRIGGER
-
-    //! SIMULAR ROLLBACK
-
-
-    client.query("COMMIT");
-
+    result = await client.query(`Select * from empleado where categoria = 'jerarquico'`);
+    console.log(result.rows);
   } catch (error) {
     console.error('Error en la aplicación:', error.message);
     client.query("ROLLBACK");
